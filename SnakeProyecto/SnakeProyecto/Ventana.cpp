@@ -11,3 +11,13 @@ void Ventana::ModificarNivel(int n)
 {
 	this->nivel = n;
 }
+
+void Ventana::ModificarPuntos(int pts)
+{
+	this->puntos = pts;
+}
+
+int Ventana::ObtenerPuntos()
+{
+	return this->puntos;
+}

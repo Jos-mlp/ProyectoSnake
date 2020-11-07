@@ -1,8 +1,12 @@
 #include <iostream>
+#include <string>
 #include <allegro5/allegro.h>
 #include "Ventana.h"
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_native_dialog.h>
 
 
 using namespace std;
@@ -21,11 +25,15 @@ void DesactivarComandos() {
 
 }
 
-int main() {
-	int x = 0, y = 0, x1 = 0, y1 = 0;
 
+
+int main() {
+	//variables de movimiento
+	int x = 0, y = 0, x1 = 44, y1 = 170;
 	//inicia el interfza visual, el mouse, las imagenes,las figuras primitivas, el teclado
 	al_init();
+	al_init_font_addon();
+	al_init_ttf_addon();
 	al_install_mouse();
 	al_init_image_addon();
 	al_init_primitives_addon();
@@ -33,7 +41,8 @@ int main() {
 
 	//Crea el lienzo y lo genera de color blanco
 	Ventana menu = Ventana(1500, 1000);
-
+	//carga la fuente para el texto
+	ALLEGRO_FONT* mainkra = al_load_font("Recursos/mine.ttf",100,0);
 	//evento del tiempo 
 	ALLEGRO_TIMER* segundosTimer = al_create_timer(1.00);
 	//Eventos del mouse y teclado y del timer
@@ -57,6 +66,9 @@ int main() {
 	ALLEGRO_BITMAP* nivel_intermedio = al_load_bitmap("Recursos/niveles_intermedio.jpg");
 	ALLEGRO_BITMAP* nivel_dificil = al_load_bitmap("Recursos/niveles_dificil.jpg");
 	ALLEGRO_BITMAP* nivel_dinamico = al_load_bitmap("Recursos/niveles_dinamico.jpg");
+	//del juego en ejecucion
+	ALLEGRO_BITMAP* fondo_juego = al_load_bitmap("Recursos/juego_fondo.jpg");
+
 
 	//mantiene en ejecucion el programa
 	while (ejecucion == true) {
@@ -65,7 +77,8 @@ int main() {
 		
 	//funciones jugando
 		if (jugando == true) {
-
+			x = evento.mouse.x;
+			y = evento.mouse.y;
 			//timer evento
 			if (evento.type == ALLEGRO_EVENT_TIMER) {
 				if (evento.timer.source == segundosTimer) {
@@ -85,9 +98,17 @@ int main() {
 
 				}
 			}
-			//imprime las imagenes y borra la pantalla
-			al_clear_to_color(al_map_rgb(0, 0, 0));
+			//se encarga de borrar la pantalla y sobreescribirla
+			//sirve para la ejecucion del juego
+			al_draw_bitmap(fondo_juego, 0, 0, 0);
 			al_draw_bitmap(borrador, x1, y1, 0);
+			//imprime la puntuacion del juego
+			al_draw_text(mainkra, al_map_rgb(0, 0, 0), 30, 30, NULL, ("SCORE: " + to_string(menu.ObtenerPuntos())).c_str() );
+
+
+			if (evento.mouse.button & 1) {
+				cout << "x:" << x << "  y:" << y << endl;
+			}
 
 			//eventos del teclado y controla el gusanito
 			if (evento.type == ALLEGRO_EVENT_KEY_DOWN)
@@ -97,29 +118,74 @@ int main() {
 				case ALLEGRO_KEY_UP:
 					DesactivarComandos();
 					arriba = true;
-					cout << "Felacha arriba" << endl;
+					cout << "Fleacha arriba" << endl;
 					break;
 				case ALLEGRO_KEY_DOWN:
 					DesactivarComandos();
 					abajo = true;
-					cout << "Felacha abajo" << endl;
+					cout << "Fleacha abajo" << endl;
 					break;
 				case ALLEGRO_KEY_LEFT:
 					DesactivarComandos();
 					izquierda = true;
-					cout << "Felacha izquierda" << endl;
+					cout << "Fleacha izquierda" << endl;
 					break;
 				case ALLEGRO_KEY_RIGHT:
 					DesactivarComandos();
 					derecha = true;
-					cout << "Felacha derecha" << endl;
+					cout << "Fleacha derecha" << endl;
 					break;
 				default:
 					break;
 				}
 			}
-		//funciones del menu 1
+		//imprime las cordenadas
+
+
+		//esto determina si la serpiente topa con algun obstaculo o con el borde de la pantalla
+			//estas variables ayudan a que se tome en cuenta el final del cubo
+			int x2 = x1 + 55;
+			int y2 = y1 + 55;
+			//este if sirve para saber si toco alguna orilla
+			if (x1 < 44 || y1 < 170 || x2>1445 || y2>921) {
+				int button = al_show_native_message_box(NULL,"Perdiste","BUENA SUERTE A LA PROXIMA","Has perdido :(, ¿Quieres volver a jugar?",NULL,ALLEGRO_MESSAGEBOX_YES_NO);
+				if (button == 1) {
+					menu.ModificarNivel(0);
+					DesactivarComandos();
+					abajo = true;
+					x1 = 44;
+					y1 = 170;
+				}
+				else {
+					jugando = false;
+					menu_inicio = true;
+				}
+
+			}
+
+		
+		//aca termina la ejecucion de jugando
 		}
+
+
+
+
+
+
+
+
+		//esto
+		//ya
+		//esta
+		//t
+		//e
+		//r
+		//m
+		//i
+		//n
+		//a
+		//d
+		//o
 		if (evento.type == ALLEGRO_EVENT_MOUSE_AXES || evento.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 			x = evento.mouse.x;
 			y = evento.mouse.y;
@@ -152,12 +218,10 @@ int main() {
 				//si el boton izquierdo del mouse es presionado se ejecuta el if
 				if (evento.mouse.button & 1) {
 					cout << "x:" << x << "  y:" << y << endl;
-
-
-
 				}
 
 			}
+			//sirve para elegir el tipo de nivel
 			else if (menu_nivel == true) {
 				//sirve para detectar cuando se mueve el mouse y cuando es presionado
 				if (evento.type == ALLEGRO_EVENT_MOUSE_AXES || evento.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
