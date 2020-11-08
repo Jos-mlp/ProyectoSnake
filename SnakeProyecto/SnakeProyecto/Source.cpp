@@ -7,13 +7,16 @@
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_native_dialog.h>
+#include <stdlib.h>
+#include <time.h>
 
 
 using namespace std;
 //teclas
 bool arriba = false, abajo = true, izquierda = false, derecha = false;
 //juego ejecutado
-bool ejecucion = true;
+bool ejecucion = true, fruta_generada = false;
+int tipo_fruta;
 //menus
 bool menu_inicio = true, menu_nivel = false,jugando=false;
 
@@ -28,8 +31,9 @@ void DesactivarComandos() {
 
 
 int main() {
+	srand(time(NULL));
 	//variables de movimiento
-	int x = 0, y = 0, x1 = 44, y1 = 170;
+	int x = 0, y = 0, x1 = 45, y1 = 170, fx, fy;
 	//inicia el interfza visual, el mouse, las imagenes,las figuras primitivas, el teclado
 	al_init();
 	al_init_font_addon();
@@ -55,7 +59,6 @@ int main() {
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
 
 	//carga las imagenes
-	ALLEGRO_BITMAP* borrador = al_load_bitmap("Recursos/Borrador.jpg");
 	//menu principal
 	ALLEGRO_BITMAP* menu_default = al_load_bitmap("Recursos/menu_principal.jpg");
 	ALLEGRO_BITMAP* menu_jugar = al_load_bitmap("Recursos/menu_jugar.jpg");
@@ -68,8 +71,12 @@ int main() {
 	ALLEGRO_BITMAP* nivel_dinamico = al_load_bitmap("Recursos/niveles_dinamico.jpg");
 	//del juego en ejecucion
 	ALLEGRO_BITMAP* fondo_juego = al_load_bitmap("Recursos/juego_fondo.jpg");
-
-
+	ALLEGRO_BITMAP* manzana = al_load_bitmap("Recursos/Manzana.png");
+	ALLEGRO_BITMAP* c_i = al_load_bitmap("Recursos/cabeza_izquierda.jpg");
+	ALLEGRO_BITMAP* c_d = al_load_bitmap("Recursos/cabeza_derecha.jpg");
+	ALLEGRO_BITMAP* c_b = al_load_bitmap("Recursos/cabeza_abajo.jpg");
+	ALLEGRO_BITMAP* c_a = al_load_bitmap("Recursos/cabeza_arriba.jpg");
+	ALLEGRO_BITMAP* cuerpo_Snake = al_load_bitmap("Recursos/cuerpo.jpg");
 	//mantiene en ejecucion el programa
 	while (ejecucion == true) {
 		//Inicializa la variable evento y le pasa el evento generado
@@ -79,32 +86,41 @@ int main() {
 		if (jugando == true) {
 			x = evento.mouse.x;
 			y = evento.mouse.y;
+			//se encarga de borrar la pantalla y sobreescribirla
+			//sirve para la ejecucion del juego
+			al_draw_bitmap(fondo_juego, 0, 0, 0);
+
 			//timer evento
 			if (evento.type == ALLEGRO_EVENT_TIMER) {
 				if (evento.timer.source == segundosTimer) {
 					if (abajo == true) {
 						y1 = y1 + 55;
-
+						//imprime la cabeza de la culebrita segun a donde avanze
+						al_draw_bitmap(c_b, x1, y1, 0);
 					}
 					if (izquierda == true) {
 						x1 = x1 - 55;
+						//imprime la cabeza de la culebrita segun a donde avanze
+						al_draw_bitmap(c_i, x1, y1, 0);
 					}
 					if (arriba == true) {
 						y1 = y1 - 55;
+						//imprime la cabeza de la culebrita segun a donde avanze
+						al_draw_bitmap(c_a, x1, y1, 0);
 					}
 					if (derecha == true) {
 						x1 = x1 + 55;
+						//imprime la cabeza de la culebrita segun a donde avanze
+						al_draw_bitmap(c_d, x1, y1, 0);
 					}
 
 				}
 			}
-			//se encarga de borrar la pantalla y sobreescribirla
-			//sirve para la ejecucion del juego
-			al_draw_bitmap(fondo_juego, 0, 0, 0);
-			al_draw_bitmap(borrador, x1, y1, 0);
+
 			//imprime la puntuacion del juego
 			al_draw_text(mainkra, al_map_rgb(0, 0, 0), 30, 30, NULL, ("SCORE: " + to_string(menu.ObtenerPuntos())).c_str() );
-
+			//imprime las manzanas consumidas
+			al_draw_text(mainkra, al_map_rgb(0, 0, 0), 1310, 30, NULL, (to_string(menu.ObtenerCantFrutas())).c_str());
 
 			if (evento.mouse.button & 1) {
 				cout << "x:" << x << "  y:" << y << endl;
@@ -139,7 +155,7 @@ int main() {
 					break;
 				}
 			}
-		//imprime las cordenadas
+
 
 
 		//esto determina si la serpiente topa con algun obstaculo o con el borde de la pantalla
@@ -147,7 +163,7 @@ int main() {
 			int x2 = x1 + 55;
 			int y2 = y1 + 55;
 			//este if sirve para saber si toco alguna orilla
-			if (x1 < 44 || y1 < 170 || x2>1445 || y2>921) {
+			if (x1 < 45 || y1 < 170 || x2>1445 || y2>920) {
 				int button = al_show_native_message_box(NULL,"Perdiste","BUENA SUERTE A LA PROXIMA","Has perdido :(, ¿Quieres volver a jugar?",NULL,ALLEGRO_MESSAGEBOX_YES_NO);
 				if (button == 1) {
 					menu.ModificarNivel(0);
@@ -163,7 +179,34 @@ int main() {
 
 			}
 
+		//se genera la fruta en una cordenada aleatoria
+			/*if (fruta_generada == false) {
+				fx = menu.ObtenerAleatorioX();
+				fy = menu.ObtenerAleatorioY();
+				tipo_fruta = menu.ObtenerTipoFruta();
+				fruta_generada = true;
+			}
+			fruta_generada = false;
+			//se imprime el tipo de fruta generada aleatoriamente
+			if (tipo_fruta == 1) {
+				al_draw_bitmap(manzana, fx, fy, 0);
+			}
+			else if (tipo_fruta == 2) {
+				al_draw_bitmap(manzana, fx, fy, 0);
+			}
+			else if (tipo_fruta == 2) {
+				al_draw_bitmap(manzana, fx, fy, 0);
+			}
+			else if (tipo_fruta == 2) {
+				al_draw_bitmap(manzana, fx, fy, 0);
+			}
+			else if (tipo_fruta == 2) {
+				al_draw_bitmap(manzana, fx, fy, 0);
+			}*/
 		
+
+
+
 		//aca termina la ejecucion de jugando
 		}
 
