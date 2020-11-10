@@ -4,7 +4,7 @@ class Ventana
 private:
 	int nivel=1;
 	int puntos = 0;
-	bool velocidad;
+	bool velocidad=0;
 	int aleatorioX=0;
 	int aleatorioY=0;
 	int frutas = 0;
@@ -22,6 +22,6 @@ public:
 	int ObtenerAleatorioY();
 	int ObtenerCantFrutas();
 	int ObtenerTipoFruta();
-	int ObtenerVelocidad();
+	double ObtenerVelocidad();
 };
 

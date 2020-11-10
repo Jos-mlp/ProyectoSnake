@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <string>
 #include <allegro5/allegro.h>
 #include "Ventana.h"
@@ -18,7 +18,7 @@ bool arriba = false, abajo = true, izquierda = false, derecha = false;
 bool ejecucion = true, fruta_generada = false;
 int tipo_fruta;
 //menus
-bool menu_inicio = true, menu_nivel = false,jugando=false;
+bool menu_inicio = true, menu_nivel = false, jugando = false;
 
 void DesactivarComandos() {
 	arriba = false;
@@ -46,7 +46,7 @@ int main() {
 	//Crea el lienzo y lo genera de color blanco
 	Ventana menu = Ventana(1500, 1000);
 	//carga la fuente para el texto
-	ALLEGRO_FONT* mainkra = al_load_font("Recursos/mine.ttf",100,0);
+	ALLEGRO_FONT* mainkra = al_load_font("Recursos/mine.ttf", 100, 0);
 	//evento del tiempo 
 	ALLEGRO_TIMER* segundosTimer = al_create_timer(1.00);
 	//Eventos del mouse y teclado y del timer
@@ -81,8 +81,8 @@ int main() {
 	while (ejecucion == true) {
 		//Inicializa la variable evento y le pasa el evento generado
 		al_wait_for_event(event_queue, &evento);
-		
-	//funciones jugando
+
+		//funciones jugando
 		if (jugando == true) {
 			x = evento.mouse.x;
 			y = evento.mouse.y;
@@ -94,22 +94,22 @@ int main() {
 			if (evento.type == ALLEGRO_EVENT_TIMER) {
 				if (evento.timer.source == segundosTimer) {
 					if (abajo == true) {
-						y1 = y1 + 55;
+						y1 = y1 + 50;
 						//imprime la cabeza de la culebrita segun a donde avanze
 						al_draw_bitmap(c_b, x1, y1, 0);
 					}
 					if (izquierda == true) {
-						x1 = x1 - 55;
+						x1 = x1 - 50;
 						//imprime la cabeza de la culebrita segun a donde avanze
 						al_draw_bitmap(c_i, x1, y1, 0);
 					}
 					if (arriba == true) {
-						y1 = y1 - 55;
+						y1 = y1 - 50;
 						//imprime la cabeza de la culebrita segun a donde avanze
 						al_draw_bitmap(c_a, x1, y1, 0);
 					}
 					if (derecha == true) {
-						x1 = x1 + 55;
+						x1 = x1 + 50;
 						//imprime la cabeza de la culebrita segun a donde avanze
 						al_draw_bitmap(c_d, x1, y1, 0);
 					}
@@ -118,7 +118,7 @@ int main() {
 			}
 
 			//imprime la puntuacion del juego
-			al_draw_text(mainkra, al_map_rgb(0, 0, 0), 30, 30, NULL, ("SCORE: " + to_string(menu.ObtenerPuntos())).c_str() );
+			al_draw_text(mainkra, al_map_rgb(0, 0, 0), 30, 30, NULL, ("SCORE: " + to_string(menu.ObtenerPuntos())).c_str());
 			//imprime las manzanas consumidas
 			al_draw_text(mainkra, al_map_rgb(0, 0, 0), 1310, 30, NULL, (to_string(menu.ObtenerCantFrutas())).c_str());
 
@@ -158,18 +158,18 @@ int main() {
 
 
 
-		//esto determina si la serpiente topa con algun obstaculo o con el borde de la pantalla
-			//estas variables ayudan a que se tome en cuenta el final del cubo
+			//esto determina si la serpiente topa con algun obstaculo o con el borde de la pantalla
+				//estas variables ayudan a que se tome en cuenta el final del cubo
 			int x2 = x1 + 55;
 			int y2 = y1 + 55;
 			//este if sirve para saber si toco alguna orilla
-			if (x1 < 45 || y1 < 170 || x2>1445 || y2>920) {
-				int button = al_show_native_message_box(NULL,"Perdiste","BUENA SUERTE A LA PROXIMA","Has perdido :(, ¿Quieres volver a jugar?",NULL,ALLEGRO_MESSAGEBOX_YES_NO);
+			if (x1 < 45 || y1 < 170 || x2>1495 || y2>970) {
+				int button = al_show_native_message_box(NULL, "Perdiste", "BUENA SUERTE A LA PROXIMA", "Has perdido :(, ï¿½Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
 				if (button == 1) {
 					menu.ModificarNivel(0);
 					DesactivarComandos();
 					abajo = true;
-					x1 = 44;
+					x1 = 45;
 					y1 = 170;
 				}
 				else {
@@ -179,35 +179,34 @@ int main() {
 
 			}
 
-		//se genera la fruta en una cordenada aleatoria
-			/*if (fruta_generada == false) {
-				fx = menu.ObtenerAleatorioX();
-				fy = menu.ObtenerAleatorioY();
-				tipo_fruta = menu.ObtenerTipoFruta();
-				fruta_generada = true;
-			}
-			fruta_generada = false;
-			//se imprime el tipo de fruta generada aleatoriamente
-			if (tipo_fruta == 1) {
-				al_draw_bitmap(manzana, fx, fy, 0);
-			}
-			else if (tipo_fruta == 2) {
-				al_draw_bitmap(manzana, fx, fy, 0);
-			}
-			else if (tipo_fruta == 2) {
-				al_draw_bitmap(manzana, fx, fy, 0);
-			}
-			else if (tipo_fruta == 2) {
-				al_draw_bitmap(manzana, fx, fy, 0);
-			}
-			else if (tipo_fruta == 2) {
-				al_draw_bitmap(manzana, fx, fy, 0);
-			}*/
-		
+			//se genera la fruta en una cordenada aleatoria
+				if (fruta_generada == false) {
+					fx = menu.ObtenerAleatorioX();
+					fy = menu.ObtenerAleatorioY();
+					tipo_fruta = menu.ObtenerTipoFruta();
+					fruta_generada = true;
+				}
+				//se imprime el tipo de fruta generada aleatoriamente
+				if (tipo_fruta == 1) {
+					al_draw_bitmap(manzana, fx, fy, 0);
+				}
+				else if (tipo_fruta == 2) {
+					al_draw_bitmap(manzana, fx, fy, 0);
+				}
+				else if (tipo_fruta == 2) {
+					al_draw_bitmap(manzana, fx, fy, 0);
+				}
+				else if (tipo_fruta == 2) {
+					al_draw_bitmap(manzana, fx, fy, 0);
+				}
+				else if (tipo_fruta == 2) {
+					al_draw_bitmap(manzana, fx, fy, 0);
+				}
 
 
 
-		//aca termina la ejecucion de jugando
+
+				//aca termina la ejecucion de jugando
 		}
 
 
@@ -330,4 +329,3 @@ int main() {
 	}
 	return 0;
 }
-
