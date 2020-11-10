@@ -203,7 +203,11 @@ int main() {
 					al_draw_bitmap(manzana, fx, fy, 0);
 				}
 
-
+				//esta condicion, evalua cuando la culebrita toca algun fruto
+				if (x1 == fx && y1 == fy) {
+					menu.ModificarFrutas();
+					fruta_generada == false;
+				}
 
 
 				//aca termina la ejecucion de jugando
