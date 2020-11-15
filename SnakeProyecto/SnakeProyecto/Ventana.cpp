@@ -33,6 +33,29 @@ Nodo* Ventana::ObtenerFrente()
 	return this->frente;
 }
 
+Nodo* Ventana::Eliminar()
+{
+	Nodo* aux = this->frente;
+	Nodo* aux2 = aux->ObtenerSiguiente();
+	if (this->frente == this->fondo) {
+		this->frente = nullptr;
+		this->fondo = nullptr;
+	}
+	else {
+		while (aux2 != nullptr)
+		{
+			if (aux2 == this->fondo) {
+				this->fondo = aux;
+				aux->ModificarSiguiente(nullptr);
+			}
+			aux = aux->ObtenerSiguiente();
+			aux2 = aux2->ObtenerSiguiente();
+		}
+	}
+	this->tamanio--;
+	return aux;
+}
+
 void Ventana::ModificarNivel(int n)
 {
 	this->nivel = n;
@@ -82,6 +105,17 @@ void Ventana::ModificarCordenadas(int x, int y)
 		}
 		aux = aux->ObtenerSiguiente();
 	}
+}
+
+void Ventana::ReiniciarTamanio()
+{
+	this->tamanio = 0;
+}
+
+void Ventana::ReiniciarLista()
+{
+	this->frente = nullptr;
+	this->fondo = nullptr;
 }
 
 int Ventana::Obtener_x(Nodo* aux)

@@ -15,14 +15,17 @@ private:
 public:
 	//constructor
 	Ventana(int, int);
-	//Insertar y obtener
+	//Insertar, obtener y eliminar
 	void InsertarFondo(int, int);
 	Nodo* ObtenerFrente();
+	Nodo* Eliminar();
 	//modificadores
 	void ModificarNivel(int);
 	void ModificarPuntos(int);
 	void ModificarFrutas(int);
 	void ModificarCordenadas(int, int);
+	void ReiniciarTamanio();
+	void ReiniciarLista();
 	//accesores
 	int Obtener_x(Nodo*);
 	int Obtener_y(Nodo*);

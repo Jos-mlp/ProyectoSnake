@@ -15,7 +15,7 @@ using namespace std;
 //teclas
 bool arriba = false, abajo = true, izquierda = false, derecha = false;
 //juego ejecutado
-bool ejecucion = true, fruta_generada = false;
+bool ejecucion = true, fruta_generada = false, timer=false;
 int tipo_fruta;
 //menus
 bool menu_inicio = true, menu_nivel = false, jugando = false;
@@ -53,7 +53,6 @@ int main() {
 	ALLEGRO_EVENT evento;
 	ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
 	al_register_event_source(event_queue, al_get_timer_event_source(segundosTimer));
-	al_start_timer(segundosTimer);
 	al_register_event_source(event_queue, al_get_mouse_event_source());
 	al_register_event_source(event_queue, al_get_timer_event_source(segundosTimer));
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
@@ -93,6 +92,10 @@ int main() {
 		if (jugando == true) {
 			x = evento.mouse.x;
 			y = evento.mouse.y;
+			//si el timer esta desactivado lo inicia
+			if (timer == false) {
+				al_start_timer(segundosTimer);
+			}
 			//se encarga de borrar la pantalla y sobreescribirla
 			//sirve para la ejecucion del juego
 			al_draw_bitmap(fondo_juego, 0, 0, 0);
@@ -243,11 +246,15 @@ int main() {
 			if (x1 == fx && y1 == fy) {
 				if (tipo_fruta == 1) {
 					//pinia
+					for (int i = 0; i < 5; i++) {
+						menu.Eliminar();
+					}
 				}
 				else if (tipo_fruta == 2) {
 					//pera
+					menu.Eliminar();
 				}
-				else if (tipo_fruta == 2) {
+				else if (tipo_fruta == 3) {
 					//banano
 					menu.ModificarFrutas(3);
 
@@ -256,7 +263,7 @@ int main() {
 						menu.InsertarFondo(x1, y1);
 					}
 				}
-				else if (tipo_fruta == 2) {
+				else if (tipo_fruta == 4) {
 					//fresa
 					menu.ModificarFrutas(2);
 
