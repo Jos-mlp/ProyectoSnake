@@ -11,6 +11,28 @@ Ventana::Ventana(int ancho, int alto)
 	al_set_window_title(ventana, "Snake Play");
 }
 
+void Ventana::InsertarFondo(int x, int y)
+{
+	Nodo* nuevo = new Nodo();
+	nuevo->ModificarXyY(x, y);
+
+	if (this->fondo == nullptr && this->frente == nullptr) {
+		this->fondo = nuevo;
+		this->frente = nuevo;
+		nuevo->ModificarSiguiente(nullptr);
+	}
+	else {
+		this->fondo->ModificarSiguiente(nuevo);
+		this->fondo = nuevo;
+	}
+	this->tamanio++;
+}
+
+Nodo* Ventana::ObtenerFrente()
+{
+	return this->frente;
+}
+
 void Ventana::ModificarNivel(int n)
 {
 	this->nivel = n;
@@ -33,11 +55,54 @@ void Ventana::ModificarPuntos(int pts)
 	this->puntos = this->puntos + pts;
 }
 
-void Ventana::ModificarFrutas()
+void Ventana::ModificarFrutas(int num)
 {
-	this->frutas++;
+	this->frutas = this->frutas + num;
 }
 
+void Ventana::ModificarCordenadas(int x, int y)
+{
+	Nodo* aux = this->frente;
+	//Nodo *aux2=aux->ObtenerSiguiente();
+	int x1, y1, x2, y2;
+	while (aux != nullptr)
+	{
+
+		if (aux == this->frente) {
+			x1 = aux->ObtenerX();
+			y1 = aux->ObtenerY();
+			aux->ModificarXyY(x, y);
+		}
+		else {
+			x2 = aux->ObtenerX();
+			y2 = aux->ObtenerY();
+			aux->ModificarXyY(x1, y1);
+			x1 = x2;
+			y1 = y2;
+		}
+		aux = aux->ObtenerSiguiente();
+	}
+}
+
+int Ventana::Obtener_x(Nodo* aux)
+{
+	return aux->ObtenerX();
+}
+
+int Ventana::Obtener_y(Nodo* aux)
+{
+	return aux->ObtenerY();
+}
+
+Nodo* Ventana::ObtenerNodoSiguiente(Nodo* sig)
+{
+	return sig->ObtenerSiguiente();
+}
+
+int Ventana::ObtenerTamanio()
+{
+	return this->tamanio;
+}
 
 int Ventana::ObtenerPuntos()
 {

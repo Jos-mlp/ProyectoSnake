@@ -33,7 +33,7 @@ void DesactivarComandos() {
 int main() {
 	srand(time(NULL));
 	//variables de movimiento
-	int x = 0, y = 0, x1 = 45, y1 = 170, fx, fy;
+	int x = 0, y = 0, x1 = 45, y1 = 170, fx=0, fy=0;
 	//inicia el interfza visual, el mouse, las imagenes,las figuras primitivas, el teclado
 	al_init();
 	al_init_font_addon();
@@ -85,6 +85,7 @@ int main() {
 
 	//mantiene en ejecucion el programa
 	while (ejecucion == true) {
+		Nodo* aux = menu.ObtenerFrente();
 		//Inicializa la variable evento y le pasa el evento generado
 		al_wait_for_event(event_queue, &evento);
 
@@ -127,6 +128,9 @@ int main() {
 			//timer evento
 			if (evento.type == ALLEGRO_EVENT_TIMER) {
 				if (evento.timer.source == segundosTimer) {
+					//hace que el cuerpo se mueva con la cabeza
+					menu.ModificarCordenadas(x1, y1);
+
 					if (abajo == true) {
 						y1 = y1 + 50;
 						//imprime la cabeza de la culebrita segun a donde avanze
@@ -147,7 +151,17 @@ int main() {
 						//imprime la cabeza de la culebrita segun a donde avanze
 						al_draw_bitmap(c_d, x1, y1, 0);
 					}
-
+					//imprime el cuerpo
+					cout << endl;
+					cout << "Tamanio" << endl;
+					cout << menu.ObtenerTamanio() << endl;
+					while (aux != nullptr) {
+						int x4 = menu.Obtener_x(aux);
+						int y4 = menu.Obtener_y(aux);
+						cout << "x4: " << x4 << " y4: " << y4 << endl;
+						al_draw_bitmap(cuerpo_Snake, x4, y4, 0);
+						aux = menu.ObtenerNodoSiguiente(aux);
+					}
 				}
 			}
 
@@ -225,13 +239,45 @@ int main() {
 
 			
 
-				//esta condicion, evalua cuando la culebrita toca algun fruto
-				if (x1 == fx && y1 == fy) {
-					//actualiza las frutas y genera otra mandando el false
-					menu.ModificarFrutas();
-					fruta_generada == false;
-
+			//esta condicion, evalua cuando la culebrita toca algun fruto
+			if (x1 == fx && y1 == fy) {
+				if (tipo_fruta == 1) {
+					//pinia
 				}
+				else if (tipo_fruta == 2) {
+					//pera
+				}
+				else if (tipo_fruta == 2) {
+					//banano
+					menu.ModificarFrutas(3);
+
+					//Inserta tres nuevos elementos a la lista
+					for (int i = 0; i < 3; i++) {
+						menu.InsertarFondo(x1, y1);
+					}
+				}
+				else if (tipo_fruta == 2) {
+					//fresa
+					menu.ModificarFrutas(2);
+
+					//Inserta dos nuevos elementos a la lista
+					menu.InsertarFondo(x1, y1);
+					menu.InsertarFondo(x1, y1);
+				}
+				else {
+					//manzana
+					menu.ModificarFrutas(1);
+
+					//Inserta un nuevo elemento a la lista
+					menu.InsertarFondo(x1, y1);
+				}
+				//manda a generar una nueva fruta
+				fruta_generada = false;
+
+			}
+
+
+
 
 
 				//aca termina la ejecucion de jugando
