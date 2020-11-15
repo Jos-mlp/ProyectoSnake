@@ -30,7 +30,7 @@ void Ventana::ModificarNivel(int n)
 
 void Ventana::ModificarPuntos(int pts)
 {
-	this->puntos = pts;
+	this->puntos = this->puntos + pts;
 }
 
 void Ventana::ModificarFrutas()
@@ -38,10 +38,6 @@ void Ventana::ModificarFrutas()
 	this->frutas++;
 }
 
-void Ventana::ModificarVelocidad(int vel)
-{
-	this->velocidad = vel;
-}
 
 int Ventana::ObtenerPuntos()
 {
@@ -73,6 +69,27 @@ int Ventana::ObtenerCantFrutas()
 
 int Ventana::ObtenerTipoFruta()
 {
+	srand(time(NULL));
+	this->tipo_fruta = (rand() % 20) + 1;
+	//pinia [1 - 5]=1
+	if (this->tipo_fruta == 1) {
+		return 1;
+	}
+	//pera [6-15]
+	if (this->tipo_fruta >=6 && this->tipo_fruta<=15) {
+		return 2;
+	}
+	//Banano [16-35]
+	if (this->tipo_fruta >= 16 && this->tipo_fruta <= 35) {
+		return 3;
+	}
+	//fresa[36-60]
+	if (this->tipo_fruta >= 36 && this->tipo_fruta <= 60) {
+		return 4;
+	}
+	//Manzana[61-100]
+	this->tipo_fruta = 5;
+		
 	return this->tipo_fruta;
 }
 

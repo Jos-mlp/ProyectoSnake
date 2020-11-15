@@ -10,12 +10,12 @@ private:
 	int frutas = 0;
 	int tipo_fruta = 1;
 public:
+	//constructor
 	Ventana(int, int);
 	//modificadores
 	void ModificarNivel(int);
 	void ModificarPuntos(int);
 	void ModificarFrutas();
-	void ModificarVelocidad(int);
 	//accesores
 	int ObtenerPuntos();
 	int ObtenerAleatorioX();
@@ -23,5 +23,9 @@ public:
 	int ObtenerCantFrutas();
 	int ObtenerTipoFruta();
 	double ObtenerVelocidad();
+
+
+
+
 };
 

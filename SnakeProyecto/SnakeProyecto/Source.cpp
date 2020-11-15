@@ -71,12 +71,18 @@ int main() {
 	ALLEGRO_BITMAP* nivel_dinamico = al_load_bitmap("Recursos/niveles_dinamico.jpg");
 	//del juego en ejecucion
 	ALLEGRO_BITMAP* fondo_juego = al_load_bitmap("Recursos/juego_fondo.jpg");
-	ALLEGRO_BITMAP* manzana = al_load_bitmap("Recursos/Manzana.png");
 	ALLEGRO_BITMAP* c_i = al_load_bitmap("Recursos/cabeza_izquierda.jpg");
 	ALLEGRO_BITMAP* c_d = al_load_bitmap("Recursos/cabeza_derecha.jpg");
 	ALLEGRO_BITMAP* c_b = al_load_bitmap("Recursos/cabeza_abajo.jpg");
 	ALLEGRO_BITMAP* c_a = al_load_bitmap("Recursos/cabeza_arriba.jpg");
 	ALLEGRO_BITMAP* cuerpo_Snake = al_load_bitmap("Recursos/cuerpo.jpg");
+	//imagenes de las frutas
+	ALLEGRO_BITMAP* manzana = al_load_bitmap("Recursos/Manzana.png");
+	ALLEGRO_BITMAP* pinia = al_load_bitmap("Recursos/pinia.png");
+	ALLEGRO_BITMAP* pera = al_load_bitmap("Recursos/Pera.png");
+	ALLEGRO_BITMAP* fresa = al_load_bitmap("Recursos/fresa.png");
+	ALLEGRO_BITMAP* banano = al_load_bitmap("Recursos/Banano.png");
+
 	//mantiene en ejecucion el programa
 	while (ejecucion == true) {
 		//Inicializa la variable evento y le pasa el evento generado
@@ -89,6 +95,34 @@ int main() {
 			//se encarga de borrar la pantalla y sobreescribirla
 			//sirve para la ejecucion del juego
 			al_draw_bitmap(fondo_juego, 0, 0, 0);
+
+
+			// se genera la fruta en una cordenada aleatoria
+				if (fruta_generada == false) {
+					fx = menu.ObtenerAleatorioX();
+					fy = menu.ObtenerAleatorioY();
+					tipo_fruta = menu.ObtenerTipoFruta();
+					fruta_generada = true;
+				}
+			//se imprime el tipo de fruta generada aleatoriamente
+			if (tipo_fruta == 1) {
+				al_draw_bitmap(pinia, fx, fy, 0);
+			}
+			else if (tipo_fruta == 2) {
+				al_draw_bitmap(pera, fx, fy, 0);
+			}
+			else if (tipo_fruta == 3) {
+				al_draw_bitmap(banano, fx, fy, 0);
+			}
+			else if (tipo_fruta == 4) {
+				al_draw_bitmap(fresa, fx, fy, 0);
+			}
+			else if (tipo_fruta == 5) {
+				al_draw_bitmap(manzana, fx, fy, 0);
+			}
+
+
+
 
 			//timer evento
 			if (evento.type == ALLEGRO_EVENT_TIMER) {
@@ -132,24 +166,34 @@ int main() {
 				switch (evento.keyboard.keycode)
 				{
 				case ALLEGRO_KEY_UP:
-					DesactivarComandos();
-					arriba = true;
-					cout << "Fleacha arriba" << endl;
+					if (abajo == false) {
+						DesactivarComandos();
+						arriba = true;
+						cout << "Fleacha arriba" << endl;
+						
+					}
 					break;
+
 				case ALLEGRO_KEY_DOWN:
-					DesactivarComandos();
-					abajo = true;
-					cout << "Fleacha abajo" << endl;
+					if (arriba == false) {
+						DesactivarComandos();
+						abajo = true;
+						cout << "Fleacha abajo" << endl;
+					}
 					break;
 				case ALLEGRO_KEY_LEFT:
-					DesactivarComandos();
-					izquierda = true;
-					cout << "Fleacha izquierda" << endl;
+					if (derecha == false) {
+						DesactivarComandos();
+						izquierda = true;
+						cout << "Fleacha izquierda" << endl;
+					}
 					break;
 				case ALLEGRO_KEY_RIGHT:
-					DesactivarComandos();
-					derecha = true;
-					cout << "Fleacha derecha" << endl;
+					if (izquierda == false) {
+						DesactivarComandos();
+						derecha = true;
+						cout << "Fleacha derecha" << endl;
+					}
 					break;
 				default:
 					break;
@@ -179,34 +223,14 @@ int main() {
 
 			}
 
-			//se genera la fruta en una cordenada aleatoria
-				if (fruta_generada == false) {
-					fx = menu.ObtenerAleatorioX();
-					fy = menu.ObtenerAleatorioY();
-					tipo_fruta = menu.ObtenerTipoFruta();
-					fruta_generada = true;
-				}
-				//se imprime el tipo de fruta generada aleatoriamente
-				if (tipo_fruta == 1) {
-					al_draw_bitmap(manzana, fx, fy, 0);
-				}
-				else if (tipo_fruta == 2) {
-					al_draw_bitmap(manzana, fx, fy, 0);
-				}
-				else if (tipo_fruta == 2) {
-					al_draw_bitmap(manzana, fx, fy, 0);
-				}
-				else if (tipo_fruta == 2) {
-					al_draw_bitmap(manzana, fx, fy, 0);
-				}
-				else if (tipo_fruta == 2) {
-					al_draw_bitmap(manzana, fx, fy, 0);
-				}
+			
 
 				//esta condicion, evalua cuando la culebrita toca algun fruto
 				if (x1 == fx && y1 == fy) {
+					//actualiza las frutas y genera otra mandando el false
 					menu.ModificarFrutas();
 					fruta_generada == false;
+
 				}
 
 
