@@ -13,12 +13,12 @@
 
 using namespace std;
 //teclas
-bool arriba = false, abajo = true, izquierda = false, derecha = false;
+bool arriba = false, abajo = false, izquierda = false, derecha = false;
 //juego ejecutado
 bool ejecucion = true, fruta_generada = false, timer=false;
 int tipo_fruta;
 //menus
-bool menu_inicio = true, menu_nivel = false, jugando = false;
+bool menu_inicio = true, menu_nivel = false, jugando = false, tabla_puntuaciones=false;
 
 void DesactivarComandos() {
 	arriba = false;
@@ -255,11 +255,13 @@ int main() {
 					//pinia
 					for (int i = 0; i < 5; i++) {
 						menu.Eliminar();
+						menu.ModificarPuntos(-50);
 					}
 				}
 				else if (tipo_fruta == 2) {
 					//pera
 					menu.Eliminar();
+					menu.ModificarPuntos(-25);
 				}
 				else if (tipo_fruta == 3) {
 					//banano
@@ -269,6 +271,7 @@ int main() {
 					for (int i = 0; i < 3; i++) {
 						menu.InsertarFondo(x1, y1);
 					}
+					menu.ModificarPuntos(275);
 				}
 				else if (tipo_fruta == 4) {
 					//fresa
@@ -277,6 +280,7 @@ int main() {
 					//Inserta dos nuevos elementos a la lista
 					menu.InsertarFondo(x1, y1);
 					menu.InsertarFondo(x1, y1);
+					menu.ModificarPuntos(150);
 				}
 				else {
 					//manzana
@@ -284,6 +288,7 @@ int main() {
 
 					//Inserta un nuevo elemento a la lista
 					menu.InsertarFondo(x1, y1);
+					menu.ModificarPuntos(50);
 				}
 				//manda a generar una nueva fruta
 				fruta_generada = false;
@@ -421,6 +426,16 @@ int main() {
 				}
 
 
+
+			}
+			//esto imprime la tabla de puntuaciones
+			else if (tabla_puntuaciones == true) {
+
+			//este if sirve para que cuando se presione una tecla se salga de la tabla de puntuaciones
+			if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
+				tabla_puntuaciones = false;
+				menu_inicio = true;
+			}
 
 			}
 		}
