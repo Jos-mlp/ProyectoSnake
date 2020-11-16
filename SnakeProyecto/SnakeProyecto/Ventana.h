@@ -26,6 +26,8 @@ public:
 	void ModificarCordenadas(int, int);
 	void ReiniciarTamanio();
 	void ReiniciarLista();
+	void ReiniciarPuntos();
+	void ReiniciarCantFruta();
 	//accesores
 	int Obtener_x(Nodo*);
 	int Obtener_y(Nodo*);

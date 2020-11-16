@@ -37,7 +37,7 @@ void DesactivarComandos() {
 int main() {
 	srand(time(NULL));
 	//variables de movimiento
-	int x = 0, y = 0, x1 = 45, y1 = 170, fx=0, fy=0;
+	int x = 0, y = 0, x1 = 45, y1 = 170, fx=0, fy=0, x_aux = 1, y_aux = 1;
 	//inicia el interfza visual, el mouse, las imagenes,las figuras primitivas, el teclado
 	al_init();
 	al_init_font_addon();
@@ -93,7 +93,9 @@ int main() {
 
 	//mantiene en ejecucion el programa
 	while (ejecucion == true) {
+		int tamanio = menu.ObtenerTamanio();
 		Nodo* aux = menu.ObtenerFrente();
+
 		//Inicializa la variable evento y le pasa el evento generado
 		al_wait_for_event(event_queue, &evento);
 
@@ -238,9 +240,32 @@ int main() {
 					if (derecha == true) {
 						x1 = x1 + 50;
 					}
+					/*esta condicion sirve para que al generar un nuevo elemento desde cero no 
+					lo considere como topar con su cola*/
+					if (tamanio > 0) {
+						x_aux = 0;
+						y_aux = 0;
+					}
+					else
+					{
+						x_aux = 1;
+						y_aux = 1;
+					}
 				}
 			}
 			//imprime la cabeza de la culebrita
+			//imprime el cuerpo
+			cout << endl;
+			cout << "Tamanio" << endl;
+			cout << menu.ObtenerTamanio() << endl;
+			while (aux != nullptr) {
+				int x4 = menu.Obtener_x(aux);
+				int y4 = menu.Obtener_y(aux);
+				cout << "x4: " << x4 << " y4: " << y4 << endl;
+				al_draw_bitmap(cuerpo_Snake, x4, y4, 0);
+				aux = menu.ObtenerNodoSiguiente(aux);
+			}
+
 			if (abajo == true) {
 				//imprime la cabeza de la culebrita segun a donde avanze
 				al_draw_bitmap(c_b, x1, y1, 0);
@@ -257,17 +282,7 @@ int main() {
 				//imprime la cabeza de la culebrita segun a donde avanze
 				al_draw_bitmap(c_d, x1, y1, 0);
 			}
-			//imprime el cuerpo
-			cout << endl;
-			cout << "Tamanio" << endl;
-			cout << menu.ObtenerTamanio() << endl;
-			while (aux != nullptr) {
-				int x4 = menu.Obtener_x(aux);
-				int y4 = menu.Obtener_y(aux);
-				cout << "x4: " << x4 << " y4: " << y4 << endl;
-				al_draw_bitmap(cuerpo_Snake, x4, y4, 0);
-				aux = menu.ObtenerNodoSiguiente(aux);
-			}
+			
 			//termina de imprimir la cabeza y el cuerpo
 
 
@@ -368,7 +383,7 @@ int main() {
 
 					//Inserta tres nuevos elementos a la lista
 					for (int i = 0; i < 3; i++) {
-						menu.InsertarFondo(x1, y1);
+						menu.InsertarFondo(x1+1, y1+1);
 					}
 					menu.ModificarPuntos(275);
 				}
@@ -377,8 +392,8 @@ int main() {
 					menu.ModificarFrutas(2);
 
 					//Inserta dos nuevos elementos a la lista
-					menu.InsertarFondo(x1, y1);
-					menu.InsertarFondo(x1, y1);
+					menu.InsertarFondo(x1+1, y1+1);
+					menu.InsertarFondo(x1+1, y1+1);
 					menu.ModificarPuntos(150);
 				}
 				else {
@@ -386,7 +401,7 @@ int main() {
 					menu.ModificarFrutas(1);
 
 					//Inserta un nuevo elemento a la lista
-					menu.InsertarFondo(x1, y1);
+					menu.InsertarFondo(x1+1, y1+1);
 					menu.ModificarPuntos(50);
 				}
 				//manda a generar una nueva fruta
@@ -499,6 +514,36 @@ int main() {
 			}
 			//aca termina el criterio si topa con algun block
 
+
+					//ese while sirve para saber si choco contra su cola
+					int x_c, y_c;
+					Nodo* aux2 = menu.ObtenerFrente();
+					while (aux2 != nullptr) {
+						x_c = menu.Obtener_x(aux2) + x_aux;
+						y_c = menu.Obtener_y(aux2) + y_aux;
+						//el if evalua si si toco
+						if (x1 == x_c && y1 == y_c || x2 == x_c && y2 == y_c) {
+							int button = al_show_native_message_box(NULL, "Perdiste", "BUENA SUERTE A LA PROXIMA", "Has perdido :(, �Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
+							DesactivarComandos();
+							x1 = 45;
+							y1 = 170;
+							menu.ReiniciarLista();
+							menu.ReiniciarTamanio();
+							fruta_generada = false;
+							objetos_generados = false;
+							if (button == 1) {
+
+							}
+							else {
+								jugando = false;
+								menu_inicio = true;
+							}
+						}
+						//aca termina el if que evalua la condicion
+						aux2 = menu.ObtenerNodoSiguiente(aux2);
+
+					}
+					//aca termina de evaluar el while para ver si si topa con su cola
 
 				//aca termina la ejecucion de jugando
 		}

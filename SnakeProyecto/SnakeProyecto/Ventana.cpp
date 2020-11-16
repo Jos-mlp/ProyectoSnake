@@ -118,6 +118,16 @@ void Ventana::ReiniciarLista()
 	this->fondo = nullptr;
 }
 
+void Ventana::ReiniciarPuntos()
+{
+	this->puntos = 0;
+}
+
+void Ventana::ReiniciarCantFruta()
+{
+	this->frutas = 0;
+}
+
 int Ventana::Obtener_x(Nodo* aux)
 {
 	return aux->ObtenerX();
