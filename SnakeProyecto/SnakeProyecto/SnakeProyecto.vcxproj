@@ -151,7 +151,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Lista.cpp" />
     <ClCompile Include="Nodo.cpp" />
+    <ClCompile Include="Nodo2.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Ventana.cpp" />
   </ItemGroup>
@@ -159,7 +161,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Lista.h" />
     <ClInclude Include="Nodo.h" />
+    <ClInclude Include="Nodo2.h" />
     <ClInclude Include="Ventana.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
