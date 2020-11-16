@@ -17,8 +17,12 @@ bool arriba = false, abajo = false, izquierda = false, derecha = false;
 //juego ejecutado
 bool ejecucion = true, fruta_generada = false, timer=false;
 int tipo_fruta;
+bool objetos_generados = false;
 //menus
 bool menu_inicio = true, menu_nivel = false, jugando = false, tabla_puntuaciones=false;
+//objetos
+int ox[5];
+int oy[5];
 
 void DesactivarComandos() {
 	arriba = false;
@@ -82,6 +86,10 @@ int main() {
 	ALLEGRO_BITMAP* pera = al_load_bitmap("Recursos/Pera.png");
 	ALLEGRO_BITMAP* fresa = al_load_bitmap("Recursos/fresa.png");
 	ALLEGRO_BITMAP* banano = al_load_bitmap("Recursos/Banano.png");
+	//imagenes de los objetos
+	ALLEGRO_BITMAP* columnas = al_load_bitmap("Recursos/Columna.jpeg");
+	ALLEGRO_BITMAP* ladrillo = al_load_bitmap("Recursos/Ladrillo.jpeg");
+	ALLEGRO_BITMAP* paredes = al_load_bitmap("Recursos/Pared.jpeg");
 
 	//mantiene en ejecucion el programa
 	while (ejecucion == true) {
@@ -108,13 +116,94 @@ int main() {
 			al_draw_bitmap(fondo_juego, 0, 0, 0);
 
 
-			// se genera la fruta en una cordenada aleatoria
-				if (fruta_generada == false) {
-					fx = menu.ObtenerAleatorioX();
-					fy = menu.ObtenerAleatorioY();
-					tipo_fruta = menu.ObtenerTipoFruta();
-					fruta_generada = true;
+			//ESTE ESPACIO
+			//ESTA
+			//DEDICADO
+			//A LA COLOCACION DE OBSTACULOS
+			if (objetos_generados == false) {
+				for (int i = 0; i < 5; i++) {
+					ox[i] = (rand() % 27) + 1;
+					ox[i] = 45 + (ox[i] * 50);
+					if (i < 2) {
+						oy[i] = (rand() % 15) + 0;
+						oy[i] = 170 + (oy[i] * 50);
+					}
+					else if (i > 1 && i < 4) {
+						oy[i] = (rand() % 11) + 0;
+						oy[i] = 170 + (oy[i] * 50);
+					}
+					else {
+						oy[i] = (rand() % 9) + 0;
+						oy[i] = 170 + (oy[i] * 50);
+					}
+
 				}
+				objetos_generados = true;
+			}
+			//esto imprime las imagenes segun el nivel en el que se este
+			if (menu.ObtenerNivel() == 1) {
+
+			}
+			else if (menu.ObtenerNivel() == 2) {
+				al_draw_bitmap(ladrillo, ox[0], oy[0], 0);
+				al_draw_bitmap(ladrillo, ox[1], oy[1], 0);
+				al_draw_bitmap(columnas, ox[2], oy[2], 0);
+			}
+			else if (menu.ObtenerNivel() == 3 || menu.ObtenerNivel() == 4) {
+				al_draw_bitmap(ladrillo, ox[0], oy[0], 0);
+				al_draw_bitmap(ladrillo, ox[1], oy[1], 0);
+				al_draw_bitmap(columnas, ox[2], oy[2], 0);
+				al_draw_bitmap(columnas, ox[3], oy[3], 0);
+				al_draw_bitmap(paredes, ox[4], oy[4], 0);
+			}
+			//aca termina la generacion de objetos
+
+
+			//se genera la fruta en una cordenada aleatoria
+			if (fruta_generada == false) {
+				srand(time(NULL));
+				fx = menu.ObtenerAleatorioX();
+				fy = menu.ObtenerAleatorioY();
+				tipo_fruta = menu.ObtenerTipoFruta();
+				fruta_generada = true;
+				//esto hace que si la fruta se genera sobre un bloque se vuelve a generar
+				if (menu.ObtenerNivel() == 3 || menu.ObtenerNivel() == 4) {
+
+
+					if (fx == ox[0] && fy == oy[0] || fx == ox[1] && fy == oy[1]) {
+						fruta_generada = false;
+					}
+					else {
+						for (int j = 2; j < 4; j++) {
+							for (int i = 0; i < 4; i++) {
+								if (fx == ox[j] && fy == (oy[j] + (i * 50))) {
+									fruta_generada = false;
+								}
+							}
+						}
+					}
+					for (int i = 0; i < 6; i++) {
+						if (fx == ox[4] && fy == (oy[4] + (i * 50))) {
+							fruta_generada = false;
+						}
+					}
+				}
+				else if (menu.ObtenerNivel() == 2) {
+					if (fx == ox[0] && fy == oy[0] || fx == ox[1] && fy == ox[1]) {
+						fruta_generada = false;
+					}
+					else {
+						for (int i = 0; i < 4; i++) {
+							if (fx == ox[2] && fy == (oy[2] + (i * 50))) {
+								fruta_generada = false;
+							}
+						}
+					}
+				}
+			}
+
+
+
 			//se imprime el tipo de fruta generada aleatoriamente
 			if (tipo_fruta == 1) {
 				al_draw_bitmap(pinia, fx, fy, 0);
@@ -132,48 +221,55 @@ int main() {
 				al_draw_bitmap(manzana, fx, fy, 0);
 			}
 
-
-
-
 			//timer evento
 			if (evento.type == ALLEGRO_EVENT_TIMER) {
 				if (evento.timer.source == segundosTimer) {
 					//hace que el cuerpo se mueva con la cabeza
 					menu.ModificarCordenadas(x1, y1);
-
 					if (abajo == true) {
 						y1 = y1 + 50;
-						//imprime la cabeza de la culebrita segun a donde avanze
-						al_draw_bitmap(c_b, x1, y1, 0);
 					}
 					if (izquierda == true) {
 						x1 = x1 - 50;
-						//imprime la cabeza de la culebrita segun a donde avanze
-						al_draw_bitmap(c_i, x1, y1, 0);
 					}
 					if (arriba == true) {
 						y1 = y1 - 50;
-						//imprime la cabeza de la culebrita segun a donde avanze
-						al_draw_bitmap(c_a, x1, y1, 0);
 					}
 					if (derecha == true) {
 						x1 = x1 + 50;
-						//imprime la cabeza de la culebrita segun a donde avanze
-						al_draw_bitmap(c_d, x1, y1, 0);
-					}
-					//imprime el cuerpo
-					cout << endl;
-					cout << "Tamanio" << endl;
-					cout << menu.ObtenerTamanio() << endl;
-					while (aux != nullptr) {
-						int x4 = menu.Obtener_x(aux);
-						int y4 = menu.Obtener_y(aux);
-						cout << "x4: " << x4 << " y4: " << y4 << endl;
-						al_draw_bitmap(cuerpo_Snake, x4, y4, 0);
-						aux = menu.ObtenerNodoSiguiente(aux);
 					}
 				}
 			}
+			//imprime la cabeza de la culebrita
+			if (abajo == true) {
+				//imprime la cabeza de la culebrita segun a donde avanze
+				al_draw_bitmap(c_b, x1, y1, 0);
+			}
+			if (izquierda == true) {
+				//imprime la cabeza de la culebrita segun a donde avanze
+				al_draw_bitmap(c_i, x1, y1, 0);
+			}
+			if (arriba == true) {
+				//imprime la cabeza de la culebrita segun a donde avanze
+				al_draw_bitmap(c_a, x1, y1, 0);
+			}
+			if (derecha == true) {
+				//imprime la cabeza de la culebrita segun a donde avanze
+				al_draw_bitmap(c_d, x1, y1, 0);
+			}
+			//imprime el cuerpo
+			cout << endl;
+			cout << "Tamanio" << endl;
+			cout << menu.ObtenerTamanio() << endl;
+			while (aux != nullptr) {
+				int x4 = menu.Obtener_x(aux);
+				int y4 = menu.Obtener_y(aux);
+				cout << "x4: " << x4 << " y4: " << y4 << endl;
+				al_draw_bitmap(cuerpo_Snake, x4, y4, 0);
+				aux = menu.ObtenerNodoSiguiente(aux);
+			}
+			//termina de imprimir la cabeza y el cuerpo
+
 
 			//imprime la puntuacion del juego
 			al_draw_text(mainkra, al_map_rgb(0, 0, 0), 30, 30, NULL, ("SCORE: " + to_string(menu.ObtenerPuntos())).c_str());
@@ -233,12 +329,15 @@ int main() {
 			//este if sirve para saber si toco alguna orilla
 			if (x1 < 45 || y1 < 170 || x2>1495 || y2>970) {
 				int button = al_show_native_message_box(NULL, "Perdiste", "BUENA SUERTE A LA PROXIMA", "Has perdido :(, �Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
+				DesactivarComandos();
+				x1 = 45;
+				y1 = 170;
+				menu.ReiniciarLista();
+				menu.ReiniciarTamanio();
+				fruta_generada = false;
+				objetos_generados = false;
 				if (button == 1) {
-					menu.ModificarNivel(0);
-					DesactivarComandos();
-					abajo = true;
-					x1 = 45;
-					y1 = 170;
+
 				}
 				else {
 					jugando = false;
@@ -296,7 +395,109 @@ int main() {
 			}
 
 
+			//esto evalua cuando la culebrita topa con algun block
+			if (menu.ObtenerNivel() == 3 || menu.ObtenerNivel() == 4) {
+				if (x1 == ox[0] && y1 == oy[0] || x1 == ox[1] && y1 == oy[1]) {
+					int button = al_show_native_message_box(NULL, "Perdiste", "BUENA SUERTE A LA PROXIMA", "Has perdido :(, �Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
+					DesactivarComandos();
+					x1 = 45;
+					y1 = 170;
+					menu.ReiniciarLista();
+					menu.ReiniciarTamanio();
+					fruta_generada = false;
+					objetos_generados = false;
+					if (button == 1) {
+						
+					}
+					else {
+						jugando = false;
+						menu_inicio = true;
+					}
+				}
+				else {
+					for (int j = 2; j < 4; j++) {
+						for (int i = 0; i < 4; i++) {
+							if (x1 == ox[j] && y1 == (oy[j] + (i * 50))) {
+								int button = al_show_native_message_box(NULL, "Perdiste", "BUENA SUERTE A LA PROXIMA", "Has perdido :(, �Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
+								DesactivarComandos();
+								x1 = 45;
+								y1 = 170;
+								menu.ReiniciarLista();
+								menu.ReiniciarTamanio();
+								fruta_generada = false;
+								objetos_generados = false;
+								if (button == 1) {
 
+								}
+								else {
+									jugando = false;
+									menu_inicio = true;
+								}
+							}
+						}
+					}
+				}
+				for (int i = 0; i < 6; i++) {
+					if (x1 == ox[4] && y1 == (oy[4] + (i * 50))) {
+						int button = al_show_native_message_box(NULL, "Perdiste", "BUENA SUERTE A LA PROXIMA", "Has perdido :(, �Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
+						DesactivarComandos();
+						x1 = 45;
+						y1 = 170;
+						menu.ReiniciarLista();
+						menu.ReiniciarTamanio();
+						fruta_generada = false;
+						objetos_generados = false;
+						if (button == 1) {
+
+						}
+						else {
+							jugando = false;
+							menu_inicio = true;
+						}
+					}
+				}
+			}
+			else if (menu.ObtenerNivel() == 2) {
+				if (x1 == ox[0] && y1 == oy[0] || x1 == ox[1] && y1 == oy[1]) {
+					int button = al_show_native_message_box(NULL, "Perdiste", "BUENA SUERTE A LA PROXIMA", "Has perdido :(, �Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
+					DesactivarComandos();
+					x1 = 45;
+					y1 = 170;
+					menu.ReiniciarLista();
+					menu.ReiniciarTamanio();
+					fruta_generada = false;
+					objetos_generados = false;
+					if (button == 1) {
+
+					}
+					else {
+						jugando = false;
+						menu_inicio = true;
+					}
+				}
+				else {
+					for (int i = 0; i < 4; i++) {
+						if (x1 == ox[2] && y1 == (oy[2] + (i * 50))) {
+							int button = al_show_native_message_box(NULL, "Perdiste", "BUENA SUERTE A LA PROXIMA", "Has perdido :(, �Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
+							DesactivarComandos();
+							x1 = 45;
+							y1 = 170;
+							menu.ReiniciarLista();
+							menu.ReiniciarTamanio();
+							fruta_generada = false;
+							objetos_generados = false;
+							if (button == 1) {
+
+							}
+							else {
+								jugando = false;
+								menu_inicio = true;
+							}
+						}
+					}
+				}
+			}
+			//aca termina el criterio si topa con algun block
 
 
 				//aca termina la ejecucion de jugando

@@ -196,3 +196,8 @@ double Ventana::ObtenerVelocidad()
 {
 	return this->velocidad;
 }
+
+int Ventana::ObtenerNivel()
+{
+	return this->nivel;
+}

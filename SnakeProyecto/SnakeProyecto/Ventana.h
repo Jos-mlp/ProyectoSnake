@@ -37,7 +37,7 @@ public:
 	int ObtenerCantFrutas();
 	int ObtenerTipoFruta();
 	double ObtenerVelocidad();
-
+	int ObtenerNivel();
 
 
 
