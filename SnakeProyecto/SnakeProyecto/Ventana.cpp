@@ -35,22 +35,22 @@ Nodo* Ventana::ObtenerFrente()
 
 Nodo* Ventana::Eliminar()
 {
-	Nodo* aux = this->frente;
-	Nodo* aux2 = aux->ObtenerSiguiente();
 	if (this->frente == this->fondo) {
 		this->frente = nullptr;
 		this->fondo = nullptr;
+		this->tamanio = 0;
+		return nullptr;
 	}
-	else {
-		while (aux2 != nullptr)
-		{
-			if (aux2 == this->fondo) {
-				this->fondo = aux;
-				aux->ModificarSiguiente(nullptr);
-			}
-			aux = aux->ObtenerSiguiente();
-			aux2 = aux2->ObtenerSiguiente();
+	Nodo* aux = this->frente;
+	Nodo* aux2 = aux->ObtenerSiguiente();
+	while (aux2 != nullptr)
+	{
+		if (aux2 == this->fondo) {
+			this->fondo = aux;
+			aux->ModificarSiguiente(nullptr);
 		}
+		aux = aux->ObtenerSiguiente();
+		aux2 = aux2->ObtenerSiguiente();
 	}
 	this->tamanio--;
 	return aux;
@@ -60,13 +60,13 @@ void Ventana::ModificarNivel(int n)
 {
 	this->nivel = n;
 	if (this->nivel == 1) {
-		this->velocidad = 1.00;
-	}
-	else if (this->nivel == 2) {
 		this->velocidad = 0.5;
 	}
-	else if (this->nivel == 3) {
+	else if (this->nivel == 2) {
 		this->velocidad = 0.25;
+	}
+	else if (this->nivel == 3) {
+		this->velocidad = 0.125;
 	}
 	else if (this->nivel == 4) {
 
@@ -174,21 +174,21 @@ int Ventana::ObtenerTipoFruta()
 	if (this->tipo_fruta == 1) {
 		return 1;
 	}
-	//pera [6-15]
-	if (this->tipo_fruta >=6 && this->tipo_fruta<=15) {
+	//pera [2-3]
+	if (this->tipo_fruta == 2 || this->tipo_fruta == 3) {
 		return 2;
 	}
-	//Banano [16-35]
-	if (this->tipo_fruta >= 16 && this->tipo_fruta <= 35) {
+	//Banano [4-7]
+	if (this->tipo_fruta >= 4 && this->tipo_fruta <= 7) {
 		return 3;
 	}
-	//fresa[36-60]
-	if (this->tipo_fruta >= 36 && this->tipo_fruta <= 60) {
+	//fresa[8-12]
+	if (this->tipo_fruta >= 8 && this->tipo_fruta <= 12) {
 		return 4;
 	}
-	//Manzana[61-100]
+	//Manzana[13-20]
 	this->tipo_fruta = 5;
-		
+
 	return this->tipo_fruta;
 }
 

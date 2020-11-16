@@ -47,15 +47,16 @@ int main() {
 	Ventana menu = Ventana(1500, 1000);
 	//carga la fuente para el texto
 	ALLEGRO_FONT* mainkra = al_load_font("Recursos/mine.ttf", 100, 0);
-	//evento del tiempo 
-	ALLEGRO_TIMER* segundosTimer = al_create_timer(1.00);
+	
+
 	//Eventos del mouse y teclado y del timer
 	ALLEGRO_EVENT evento;
 	ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
-	al_register_event_source(event_queue, al_get_timer_event_source(segundosTimer));
 	al_register_event_source(event_queue, al_get_mouse_event_source());
-	al_register_event_source(event_queue, al_get_timer_event_source(segundosTimer));
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
+	//eventos del tiempo
+	ALLEGRO_TIMER* segundosTimer = al_create_timer(0.5);
+	al_register_event_source(event_queue, al_get_timer_event_source(segundosTimer));
 
 	//carga las imagenes
 	//menu principal
@@ -94,6 +95,7 @@ int main() {
 			y = evento.mouse.y;
 			//si el timer esta desactivado lo inicia
 			if (timer == false) {
+				//evento del tiempo 
 				al_start_timer(segundosTimer);
 			}
 			//se encarga de borrar la pantalla y sobreescribirla
