@@ -95,8 +95,13 @@ int main() {
 			y = evento.mouse.y;
 			//si el timer esta desactivado lo inicia
 			if (timer == false) {
-				//evento del tiempo 
+				al_stop_timer(segundosTimer);
+				al_unregister_event_source(event_queue, al_get_timer_event_source(segundosTimer));
+				al_destroy_timer(segundosTimer);
+				segundosTimer = al_create_timer(menu.ObtenerVelocidad());
+				al_register_event_source(event_queue, al_get_timer_event_source(segundosTimer));
 				al_start_timer(segundosTimer);
+				timer = true;
 			}
 			//se encarga de borrar la pantalla y sobreescribirla
 			//sirve para la ejecucion del juego
@@ -346,6 +351,13 @@ int main() {
 				}
 
 			}
+
+
+
+
+			//aca empieza la 
+			//pantalla de los 
+			//niveles
 			//sirve para elegir el tipo de nivel
 			else if (menu_nivel == true) {
 				//sirve para detectar cuando se mueve el mouse y cuando es presionado
@@ -362,6 +374,7 @@ int main() {
 							menu.ModificarNivel(1);
 							menu_nivel = false;
 							jugando = true;
+							timer = false;
 						}
 					}
 					else if (x > 278 && y > 313 && x < 1140 && y < 490) {
@@ -371,6 +384,7 @@ int main() {
 							menu.ModificarNivel(2);
 							menu_nivel = false;
 							jugando = true;
+							timer = false;
 						}
 					}
 					else if (x > 278 && y > 539 && x < 1140 && y < 715) {
@@ -380,6 +394,7 @@ int main() {
 							menu.ModificarNivel(3);
 							menu_nivel = false;
 							jugando = true;
+							timer = false;
 						}
 					}
 					else if (x > 278 && y > 759 && x < 1140 && y < 935) {
@@ -389,6 +404,7 @@ int main() {
 							menu.ModificarNivel(4);
 							menu_nivel = false;
 							jugando = true;
+							timer = false;
 						}
 					}
 					else {

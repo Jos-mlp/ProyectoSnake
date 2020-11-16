@@ -59,16 +59,16 @@ Nodo* Ventana::Eliminar()
 void Ventana::ModificarNivel(int n)
 {
 	this->nivel = n;
-	if (this->nivel == 1) {
+	if (n == 1) {
 		this->velocidad = 0.5;
 	}
-	else if (this->nivel == 2) {
+	else if (n == 2) {
 		this->velocidad = 0.25;
 	}
-	else if (this->nivel == 3) {
+	else if (n == 3) {
 		this->velocidad = 0.125;
 	}
-	else if (this->nivel == 4) {
+	else if (n == 4) {
 
 	}
 }

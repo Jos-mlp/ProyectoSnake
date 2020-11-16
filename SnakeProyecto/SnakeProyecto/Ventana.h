@@ -7,7 +7,7 @@ private:
 	int tamanio;
 	int nivel=1;
 	int puntos = 0;
-	bool velocidad=0;
+	double velocidad=0;
 	int aleatorioX=0;
 	int aleatorioY=0;
 	int frutas = 0;
