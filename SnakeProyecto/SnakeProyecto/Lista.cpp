@@ -48,3 +48,15 @@ void Lista::Insertar(string nom, int pts)
 		}
 	}
 }
+
+string Lista::Recorrer()
+{
+	string res = "";
+	Nodo2* aux3 = this->frente;
+	int cont = 1;
+	while (aux3 != nullptr && cont != 5)
+		res = res + to_string(cont) + ". " + aux3->ObtenerNombre() + "  : " + to_string(aux3->ObtenerPunteo()) + '\n' ;
+	aux3 = aux3->ObtenerSiguiente();
+	cont++;
+	return string();
+}

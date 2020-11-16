@@ -9,6 +9,7 @@
 #include <allegro5/allegro_native_dialog.h>
 #include <stdlib.h>
 #include <time.h>
+#include "Lista.h"
 
 
 using namespace std;
@@ -35,6 +36,10 @@ void DesactivarComandos() {
 
 
 int main() {
+	Lista facil = Lista();
+	Lista intermedio = Lista();
+	Lista dificil = Lista();
+	Lista dinamico = Lista();
 	srand(time(NULL));
 	//variables de movimiento
 	int x = 0, y = 0, x1 = 45, y1 = 170, fx=0, fy=0, x_aux = 1, y_aux = 1;
@@ -67,6 +72,7 @@ int main() {
 	ALLEGRO_BITMAP* menu_default = al_load_bitmap("Recursos/menu_principal.jpg");
 	ALLEGRO_BITMAP* menu_jugar = al_load_bitmap("Recursos/menu_jugar.jpg");
 	ALLEGRO_BITMAP* menu_salir = al_load_bitmap("Recursos/menu_salir.jpg");
+	ALLEGRO_BITMAP* menu_pts = al_load_bitmap("Recursos/fondo_puntuaciones.jpg");
 	//menu niveles
 	ALLEGRO_BITMAP* nivel_default = al_load_bitmap("Recursos/menu_niveles.jpg");
 	ALLEGRO_BITMAP* nivel_facil = al_load_bitmap("Recursos/niveles_facil.jpg");
@@ -349,6 +355,8 @@ int main() {
 				y1 = 170;
 				menu.ReiniciarLista();
 				menu.ReiniciarTamanio();
+				menu.ReiniciarPuntos();
+				menu.ReiniciarCantFruta();
 				fruta_generada = false;
 				objetos_generados = false;
 				if (button == 1) {
@@ -419,6 +427,7 @@ int main() {
 					y1 = 170;
 					menu.ReiniciarLista();
 					menu.ReiniciarTamanio();
+					menu.ReiniciarCantFruta();
 					fruta_generada = false;
 					objetos_generados = false;
 					if (button == 1) {
@@ -426,8 +435,23 @@ int main() {
 					}
 					else {
 						jugando = false;
-						menu_inicio = true;
+						tabla_puntuaciones = true;
 					}
+					//
+					if (menu.ObtenerNivel() == 1) {
+						facil.Insertar("joss", menu.ObtenerPuntos());
+					}
+					else if (menu.ObtenerNivel() == 2) {
+						intermedio.Insertar("joss", menu.ObtenerPuntos());
+					}
+					else if (menu.ObtenerNivel() == 3) {
+						dificil.Insertar("joss", menu.ObtenerPuntos());
+					}
+					else if (menu.ObtenerNivel() == 4) {
+						dinamico.Insertar("joss", menu.ObtenerPuntos());
+					}
+					//
+					menu.ReiniciarPuntos();
 				}
 				else {
 					for (int j = 2; j < 4; j++) {
@@ -439,6 +463,7 @@ int main() {
 								y1 = 170;
 								menu.ReiniciarLista();
 								menu.ReiniciarTamanio();
+								menu.ReiniciarCantFruta();
 								fruta_generada = false;
 								objetos_generados = false;
 								if (button == 1) {
@@ -446,8 +471,23 @@ int main() {
 								}
 								else {
 									jugando = false;
-									menu_inicio = true;
+									tabla_puntuaciones = true;
 								}
+								//
+								if (menu.ObtenerNivel() == 1) {
+									facil.Insertar("joss", menu.ObtenerPuntos());
+								}
+								else if (menu.ObtenerNivel() == 2) {
+									intermedio.Insertar("joss", menu.ObtenerPuntos());
+								}
+								else if (menu.ObtenerNivel() == 3) {
+									dificil.Insertar("joss", menu.ObtenerPuntos());
+								}
+								else if (menu.ObtenerNivel() == 4) {
+									dinamico.Insertar("joss", menu.ObtenerPuntos());
+								}
+								//
+								menu.ReiniciarPuntos();
 							}
 						}
 					}
@@ -460,6 +500,7 @@ int main() {
 						y1 = 170;
 						menu.ReiniciarLista();
 						menu.ReiniciarTamanio();
+						menu.ReiniciarCantFruta();
 						fruta_generada = false;
 						objetos_generados = false;
 						if (button == 1) {
@@ -467,8 +508,23 @@ int main() {
 						}
 						else {
 							jugando = false;
-							menu_inicio = true;
+							tabla_puntuaciones = true;
 						}
+						//
+						if (menu.ObtenerNivel() == 1) {
+							facil.Insertar("joss", menu.ObtenerPuntos());
+						}
+						else if (menu.ObtenerNivel() == 2) {
+							intermedio.Insertar("joss", menu.ObtenerPuntos());
+						}
+						else if (menu.ObtenerNivel() == 3) {
+							dificil.Insertar("joss", menu.ObtenerPuntos());
+						}
+						else if (menu.ObtenerNivel() == 4) {
+							dinamico.Insertar("joss", menu.ObtenerPuntos());
+						}
+						//
+						menu.ReiniciarPuntos();
 					}
 				}
 			}
@@ -480,6 +536,7 @@ int main() {
 					y1 = 170;
 					menu.ReiniciarLista();
 					menu.ReiniciarTamanio();
+					menu.ReiniciarCantFruta();
 					fruta_generada = false;
 					objetos_generados = false;
 					if (button == 1) {
@@ -487,8 +544,23 @@ int main() {
 					}
 					else {
 						jugando = false;
-						menu_inicio = true;
+						tabla_puntuaciones = true;
 					}
+					//
+					if (menu.ObtenerNivel() == 1) {
+						facil.Insertar("joss", menu.ObtenerPuntos());
+					}
+					else if (menu.ObtenerNivel() == 2) {
+						intermedio.Insertar("joss", menu.ObtenerPuntos());
+					}
+					else if (menu.ObtenerNivel() == 3) {
+						dificil.Insertar("joss", menu.ObtenerPuntos());
+					}
+					else if (menu.ObtenerNivel() == 4) {
+						dinamico.Insertar("joss", menu.ObtenerPuntos());
+					}
+					//
+					menu.ReiniciarPuntos();
 				}
 				else {
 					for (int i = 0; i < 4; i++) {
@@ -499,6 +571,7 @@ int main() {
 							y1 = 170;
 							menu.ReiniciarLista();
 							menu.ReiniciarTamanio();
+							menu.ReiniciarCantFruta();
 							fruta_generada = false;
 							objetos_generados = false;
 							if (button == 1) {
@@ -506,8 +579,23 @@ int main() {
 							}
 							else {
 								jugando = false;
-								menu_inicio = true;
+								tabla_puntuaciones = true;
 							}
+							//
+							if (menu.ObtenerNivel() == 1) {
+								facil.Insertar("joss", menu.ObtenerPuntos());
+							}
+							else if (menu.ObtenerNivel() == 2) {
+								intermedio.Insertar("joss", menu.ObtenerPuntos());
+							}
+							else if (menu.ObtenerNivel() == 3) {
+								dificil.Insertar("joss", menu.ObtenerPuntos());
+							}
+							else if (menu.ObtenerNivel() == 4) {
+								dinamico.Insertar("joss", menu.ObtenerPuntos());
+							}
+							//
+							menu.ReiniciarPuntos();
 						}
 					}
 				}
@@ -529,6 +617,7 @@ int main() {
 							y1 = 170;
 							menu.ReiniciarLista();
 							menu.ReiniciarTamanio();
+							menu.ReiniciarCantFruta();
 							fruta_generada = false;
 							objetos_generados = false;
 							if (button == 1) {
@@ -538,6 +627,21 @@ int main() {
 								jugando = false;
 								menu_inicio = true;
 							}
+							//
+							if (menu.ObtenerNivel() == 1) {
+								facil.Insertar("joss", menu.ObtenerPuntos());
+							}
+							else if (menu.ObtenerNivel() == 2) {
+								intermedio.Insertar("joss", menu.ObtenerPuntos());
+							}
+							else if (menu.ObtenerNivel() == 3) {
+								dificil.Insertar("joss", menu.ObtenerPuntos());
+							}
+							else if (menu.ObtenerNivel() == 4) {
+								dinamico.Insertar("joss", menu.ObtenerPuntos());
+							}
+							//
+							menu.ReiniciarPuntos();
 						}
 						//aca termina el if que evalua la condicion
 						aux2 = menu.ObtenerNodoSiguiente(aux2);
@@ -676,11 +780,55 @@ int main() {
 			}
 			//esto imprime la tabla de puntuaciones
 			else if (tabla_puntuaciones == true) {
+			al_draw_bitmap(menu_pts, 0, 0, 0);
+			//imprime el nivel de la puntuacion
+			al_draw_text(mainkra, al_map_rgb(0, 0, 0), 550, 30, NULL, ("NIVEL: "+to_string(menu.ObtenerNivel())).c_str());
+			/*if (menu.ObtenerNivel() == 1) {
+				al_draw_text(mainkra, al_map_rgb(0, 0, 0), 700, 30, NULL, (facil.Recorrer()).c_str());
+			}
+			else if (menu.ObtenerNivel() == 2) {
+				al_draw_text(mainkra, al_map_rgb(0, 0, 0), 700, 30, NULL, (intermedio.Recorrer()).c_str());
+			}
+			else if (menu.ObtenerNivel() == 3) {
+				al_draw_text(mainkra, al_map_rgb(0, 0, 0), 700, 30, NULL, (dificil.Recorrer()).c_str());
+			}
+			else if (menu.ObtenerNivel() == 4) {
+				al_draw_text(mainkra, al_map_rgb(0, 0, 0), 700, 30, NULL, dinamico.Recorrer().c_str());
+			}*/
+			
 
-			//este if sirve para que cuando se presione una tecla se salga de la tabla de puntuaciones
-			if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
+
+				//este if sirve para que cuando se presione una tecla se salga de la tabla de puntuaciones
+			//Inicializa la variable evento y le pasa el evento generado
+			al_wait_for_event(event_queue, &evento);
+			if (evento.type == ALLEGRO_EVENT_KEY_DOWN)
+			{
 				tabla_puntuaciones = false;
 				menu_inicio = true;
+				switch (evento.keyboard.keycode)
+				{
+					tabla_puntuaciones = false;
+					menu_inicio = true;
+				case ALLEGRO_KEY_UP:
+					tabla_puntuaciones = false;
+					menu_inicio = true;
+					break;
+
+				case ALLEGRO_KEY_DOWN:
+					tabla_puntuaciones = false;
+					menu_inicio = true;
+					break;
+				case ALLEGRO_KEY_LEFT:
+					tabla_puntuaciones = false;
+					menu_inicio = true;
+					break;
+				case ALLEGRO_KEY_RIGHT:
+					tabla_puntuaciones = false;
+					menu_inicio = true;
+					break;
+				default:
+					break;
+				}
 			}
 
 			}

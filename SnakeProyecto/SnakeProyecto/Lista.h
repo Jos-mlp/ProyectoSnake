@@ -14,7 +14,6 @@ public:
 	Lista();
 	//Insertar
 	void Insertar(string,int);
-	Nodo2* EliminarUltimo();
 	//accesores
 	string Recorrer();
 };
