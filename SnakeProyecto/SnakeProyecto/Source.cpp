@@ -349,7 +349,7 @@ int main() {
 			int y2 = y1 + 55;
 			//este if sirve para saber si toco alguna orilla
 			if (x1 < 45 || y1 < 170 || x2>1495 || y2>970) {
-				int button = al_show_native_message_box(NULL, "Perdiste", "BUENA SUERTE A LA PROXIMA", "Has perdido :(, �Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
+				int button = al_show_native_message_box(NULL, "Perdiste", "SUERTE A LA PROXIMA", "Has perdido :(, �Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
 				DesactivarComandos();
 				x1 = 45;
 				y1 = 170;
@@ -421,7 +421,7 @@ int main() {
 			//esto evalua cuando la culebrita topa con algun block
 			if (menu.ObtenerNivel() == 3 || menu.ObtenerNivel() == 4) {
 				if (x1 == ox[0] && y1 == oy[0] || x1 == ox[1] && y1 == oy[1]) {
-					int button = al_show_native_message_box(NULL, "Perdiste", "BUENA SUERTE A LA PROXIMA", "Has perdido :(, �Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
+					int button = al_show_native_message_box(NULL, "Perdiste", "SUERTE A LA PROXIMA", "Has perdido :(, �Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
 					DesactivarComandos();
 					x1 = 45;
 					y1 = 170;
@@ -457,7 +457,7 @@ int main() {
 					for (int j = 2; j < 4; j++) {
 						for (int i = 0; i < 4; i++) {
 							if (x1 == ox[j] && y1 == (oy[j] + (i * 50))) {
-								int button = al_show_native_message_box(NULL, "Perdiste", "BUENA SUERTE A LA PROXIMA", "Has perdido :(, �Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
+								int button = al_show_native_message_box(NULL, "Perdiste", "SUERTE A LA PROXIMA", "Has perdido :(, �Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
 								DesactivarComandos();
 								x1 = 45;
 								y1 = 170;
@@ -494,7 +494,7 @@ int main() {
 				}
 				for (int i = 0; i < 6; i++) {
 					if (x1 == ox[4] && y1 == (oy[4] + (i * 50))) {
-						int button = al_show_native_message_box(NULL, "Perdiste", "BUENA SUERTE A LA PROXIMA", "Has perdido :(, �Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
+						int button = al_show_native_message_box(NULL, "Perdiste", "SUERTE A LA PROXIMA", "Has perdido :(, �Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
 						DesactivarComandos();
 						x1 = 45;
 						y1 = 170;
@@ -530,7 +530,7 @@ int main() {
 			}
 			else if (menu.ObtenerNivel() == 2) {
 				if (x1 == ox[0] && y1 == oy[0] || x1 == ox[1] && y1 == oy[1]) {
-					int button = al_show_native_message_box(NULL, "Perdiste", "BUENA SUERTE A LA PROXIMA", "Has perdido :(, �Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
+					int button = al_show_native_message_box(NULL, "Perdiste", "SUERTE A LA PROXIMA", "Has perdido :(, �Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
 					DesactivarComandos();
 					x1 = 45;
 					y1 = 170;
@@ -565,7 +565,7 @@ int main() {
 				else {
 					for (int i = 0; i < 4; i++) {
 						if (x1 == ox[2] && y1 == (oy[2] + (i * 50))) {
-							int button = al_show_native_message_box(NULL, "Perdiste", "BUENA SUERTE A LA PROXIMA", "Has perdido :(, �Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
+							int button = al_show_native_message_box(NULL, "Perdiste", "SUERTE A LA PROXIMA", "Has perdido :(, �Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
 							DesactivarComandos();
 							x1 = 45;
 							y1 = 170;
@@ -611,7 +611,7 @@ int main() {
 						y_c = menu.Obtener_y(aux2) + y_aux;
 						//el if evalua si si toco
 						if (x1 == x_c && y1 == y_c || x2 == x_c && y2 == y_c) {
-							int button = al_show_native_message_box(NULL, "Perdiste", "BUENA SUERTE A LA PROXIMA", "Has perdido :(, �Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
+							int button = al_show_native_message_box(NULL, "Perdiste", "SUERTE A LA PROXIMA", "Has perdido :(, �Quieres volver a jugar?", NULL, ALLEGRO_MESSAGEBOX_YES_NO);
 							DesactivarComandos();
 							x1 = 45;
 							y1 = 170;
@@ -778,11 +778,14 @@ int main() {
 
 
 			}
+
+
 			//esto imprime la tabla de puntuaciones
 			else if (tabla_puntuaciones == true) {
 			al_draw_bitmap(menu_pts, 0, 0, 0);
 			//imprime el nivel de la puntuacion
 			al_draw_text(mainkra, al_map_rgb(0, 0, 0), 550, 30, NULL, ("NIVEL: "+to_string(menu.ObtenerNivel())).c_str());
+			al_draw_text(mainkra, al_map_rgb(0, 0, 0), 550, 700, NULL, ("NIVEL: " + to_string(menu.ObtenerPuntos())).c_str());
 			/*if (menu.ObtenerNivel() == 1) {
 				al_draw_text(mainkra, al_map_rgb(0, 0, 0), 700, 30, NULL, (facil.Recorrer()).c_str());
 			}
