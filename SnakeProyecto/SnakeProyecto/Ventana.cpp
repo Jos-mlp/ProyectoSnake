@@ -69,7 +69,7 @@ void Ventana::ModificarNivel(int n)
 		this->velocidad = 0.125;
 	}
 	else if (n == 4) {
-
+		this->velocidad = 0.5;
 	}
 }
 
@@ -204,6 +204,18 @@ int Ventana::ObtenerTipoFruta()
 
 double Ventana::ObtenerVelocidad()
 {
+	return this->velocidad;
+}
+
+double Ventana::ObtenerYmodificarVelocidadN4()
+{
+	if (velocidad == 0) {
+		this->velocidad = 1;
+	}
+	else {
+		this->velocidad= this->velocidad - (1.00 * 0.10);
+		
+	}
 	return this->velocidad;
 }
 

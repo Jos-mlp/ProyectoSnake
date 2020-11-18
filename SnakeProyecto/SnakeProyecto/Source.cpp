@@ -66,6 +66,9 @@ int main() {
 	//eventos del tiempo
 	ALLEGRO_TIMER* segundosTimer = al_create_timer(0.5);
 	al_register_event_source(event_queue, al_get_timer_event_source(segundosTimer));
+	//timer aux que se encarga de que se cumplan los 30 segundos
+	ALLEGRO_TIMER* TimerAux = al_create_timer(30.00);
+	al_register_event_source(event_queue, al_get_timer_event_source(TimerAux));
 
 	//carga las imagenes
 	//menu principal
@@ -96,12 +99,16 @@ int main() {
 	ALLEGRO_BITMAP* columnas = al_load_bitmap("Recursos/Columna.jpeg");
 	ALLEGRO_BITMAP* ladrillo = al_load_bitmap("Recursos/Ladrillo.jpeg");
 	ALLEGRO_BITMAP* paredes = al_load_bitmap("Recursos/Pared.jpeg");
+	
+
 
 	//mantiene en ejecucion el programa
 	while (ejecucion == true) {
 		int tamanio = menu.ObtenerTamanio();
 		Nodo* aux = menu.ObtenerFrente();
-
+		//contador de que se cumplan los 30 segundos para el modo dinamico
+		int cont_timer=0;
+		al_start_timer(TimerAux);
 		//Inicializa la variable evento y le pasa el evento generado
 		al_wait_for_event(event_queue, &evento);
 
@@ -110,15 +117,26 @@ int main() {
 			x = evento.mouse.x;
 			y = evento.mouse.y;
 			//si el timer esta desactivado lo inicia
-			if (timer == false) {
-				al_stop_timer(segundosTimer);
-				al_unregister_event_source(event_queue, al_get_timer_event_source(segundosTimer));
-				al_destroy_timer(segundosTimer);
-				segundosTimer = al_create_timer(menu.ObtenerVelocidad());
-				al_register_event_source(event_queue, al_get_timer_event_source(segundosTimer));
-				al_start_timer(segundosTimer);
-				timer = true;
-			}
+				if (timer == false && menu.ObtenerNivel() !=4) {
+					al_stop_timer(segundosTimer);
+					al_unregister_event_source(event_queue, al_get_timer_event_source(segundosTimer));
+					al_destroy_timer(segundosTimer);
+					segundosTimer = al_create_timer(menu.ObtenerVelocidad());
+					al_register_event_source(event_queue, al_get_timer_event_source(segundosTimer));
+					al_start_timer(segundosTimer);
+					timer = true;
+				}
+				else if(menu.ObtenerNivel() == 4 && timer == false){
+					al_stop_timer(segundosTimer);
+					al_unregister_event_source(event_queue, al_get_timer_event_source(segundosTimer));
+					al_destroy_timer(segundosTimer);
+					segundosTimer = al_create_timer(menu.ObtenerYmodificarVelocidadN4());
+					al_register_event_source(event_queue, al_get_timer_event_source(segundosTimer));
+					al_start_timer(segundosTimer);
+					timer = true;
+					cout << "El timer se cambio" << endl;
+				}
+			
 			//se encarga de borrar la pantalla y sobreescribirla
 			//sirve para la ejecucion del juego
 			al_draw_bitmap(fondo_juego, 0, 0, 0);
@@ -228,7 +246,13 @@ int main() {
 			else if (tipo_fruta == 5) {
 				al_draw_bitmap(manzana, fx, fy, 0);
 			}
-
+			if (evento.type == ALLEGRO_EVENT_TIMER) {
+				if (evento.timer.source == TimerAux) {
+					cont_timer++;
+					cout << "Pasaron 30 segundo"<<endl;
+					timer = false;
+				}
+			}
 			//timer evento
 			if (evento.type == ALLEGRO_EVENT_TIMER) {
 				if (evento.timer.source == segundosTimer) {
@@ -261,13 +285,9 @@ int main() {
 			}
 			//imprime la cabeza de la culebrita
 			//imprime el cuerpo
-			cout << endl;
-			cout << "Tamanio" << endl;
-			cout << menu.ObtenerTamanio() << endl;
 			while (aux != nullptr) {
 				int x4 = menu.Obtener_x(aux);
 				int y4 = menu.Obtener_y(aux);
-				cout << "x4: " << x4 << " y4: " << y4 << endl;
 				al_draw_bitmap(cuerpo_Snake, x4, y4, 0);
 				aux = menu.ObtenerNodoSiguiente(aux);
 			}
@@ -296,10 +316,6 @@ int main() {
 			al_draw_text(mainkra, al_map_rgb(0, 0, 0), 30, 30, NULL, ("SCORE: " + to_string(menu.ObtenerPuntos())).c_str());
 			//imprime las manzanas consumidas
 			al_draw_text(mainkra, al_map_rgb(0, 0, 0), 1310, 30, NULL, (to_string(menu.ObtenerCantFrutas())).c_str());
-
-			if (evento.mouse.button & 1) {
-				cout << "x:" << x << "  y:" << y << endl;
-			}
 
 			//eventos del teclado y controla el gusanito
 			if (evento.type == ALLEGRO_EVENT_KEY_DOWN)
@@ -794,18 +810,7 @@ int main() {
 					else {
 						al_draw_bitmap(nivel_default, 0, 0, 0);
 					}
-
-					//si el boton izquierdo del mouse es presionado se ejecuta el if
-					if (evento.mouse.button & 1) {
-						cout << "x:" << x << "  y:" << y << endl;
-
-
-
-					}
 				}
-
-
-
 			}
 
 

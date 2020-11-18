@@ -7,7 +7,7 @@ private:
 	int tamanio;
 	int nivel=1;
 	int puntos = 0;
-	double velocidad=0;
+	double velocidad=1;
 	int aleatorioX=0;
 	int aleatorioY=0;
 	int frutas = 0;
@@ -39,6 +39,7 @@ public:
 	int ObtenerCantFrutas();
 	int ObtenerTipoFruta();
 	double ObtenerVelocidad();
+	double ObtenerYmodificarVelocidadN4();
 	int ObtenerNivel();
 
 
