@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <string>
+#include <Windows.h> 
 #include <allegro5/allegro.h>
 #include "Ventana.h"
 #include <allegro5/allegro_image.h>
@@ -34,8 +35,18 @@ void DesactivarComandos() {
 }
 
 
-
+//esta funcion oculta la consola y solo muestra la interfaz grafica
+void Stealth()
+{
+	HWND Stealth;
+	AllocConsole();
+	Stealth = FindWindowA("ConsoleWindowClass", NULL);
+	ShowWindow(Stealth, 0);
+}
 int main() {
+	//llama a la funcion que oculta la consola
+	Stealth();
+
 	Lista facil = Lista();
 	Lista intermedio = Lista();
 	Lista dificil = Lista();
@@ -249,7 +260,6 @@ int main() {
 			if (evento.type == ALLEGRO_EVENT_TIMER) {
 				if (evento.timer.source == TimerAux) {
 					cont_timer++;
-					cout << "Pasaron 30 segundo"<<endl;
 					timer = false;
 				}
 			}
@@ -409,7 +419,7 @@ int main() {
 				}
 				else {
 					jugando = false;
-					menu_inicio = true;
+					tabla_puntuaciones = true;
 				}
 
 			}
@@ -813,39 +823,40 @@ int main() {
 				}
 			}
 
-
-			//esto imprime la tabla de puntuaciones
-			else if (tabla_puntuaciones == true) {
-				al_draw_bitmap(menu_pts, 0, 0, 0);
-				//imprime el nivel de la puntuacion
-				al_draw_text(mainkra, al_map_rgb(0, 0, 0), 550, 30, NULL, ("NIVEL: " + to_string(menu.ObtenerNivel())).c_str());
-				al_draw_text(mainkra, al_map_rgb(0, 0, 0), 550, 700, NULL, ("NIVEL: " + to_string(menu.ObtenerPuntos())).c_str());
-				/*if (menu.ObtenerNivel() == 1) {
-					al_draw_text(mainkra, al_map_rgb(0, 0, 0), 700, 30, NULL, (facil.Recorrer()).c_str());
-				}
-				else if (menu.ObtenerNivel() == 2) {
-					al_draw_text(mainkra, al_map_rgb(0, 0, 0), 700, 30, NULL, (intermedio.Recorrer()).c_str());
-				}
-				else if (menu.ObtenerNivel() == 3) {
-					al_draw_text(mainkra, al_map_rgb(0, 0, 0), 700, 30, NULL, (dificil.Recorrer()).c_str());
-				}
-				else if (menu.ObtenerNivel() == 4) {
-					al_draw_text(mainkra, al_map_rgb(0, 0, 0), 700, 30, NULL, dinamico.Recorrer().c_str());
-				}*/
-
-
-
-				//este if sirve para que cuando se presione una tecla se salga de la tabla de puntuaciones
-			//Inicializa la variable evento y le pasa el evento generado
-				al_wait_for_event(event_queue, &evento);
-				if (evento.type == ALLEGRO_EVENT_KEY_DOWN)
-				{
-					tabla_puntuaciones = false;
-					menu_inicio = true;
-				}
-
-			}
 		}
+		//esto imprime la tabla de puntuaciones
+		if (tabla_puntuaciones == true) {
+			tabla_puntuaciones = false;
+			menu_inicio = true;
+			/*al_draw_bitmap(menu_pts, 0, 0, 0);
+			//imprime el nivel de la puntuacion
+			al_draw_text(mainkra, al_map_rgb(0, 0, 0), 550, 30, NULL, ("NIVEL: " + to_string(menu.ObtenerNivel())).c_str());
+			al_draw_text(mainkra, al_map_rgb(0, 0, 0), 450, 300, NULL, ("Puntos Maximo: " + to_string(menu.ObtenerPuntosMax())).c_str());
+			/*if (menu.ObtenerNivel() == 1) {
+				al_draw_text(mainkra, al_map_rgb(0, 0, 0), 700, 30, NULL, (facil.Recorrer()).c_str());
+			}
+			else if (menu.ObtenerNivel() == 2) {
+				al_draw_text(mainkra, al_map_rgb(0, 0, 0), 700, 30, NULL, (intermedio.Recorrer()).c_str());
+			}
+			else if (menu.ObtenerNivel() == 3) {
+				al_draw_text(mainkra, al_map_rgb(0, 0, 0), 700, 30, NULL, (dificil.Recorrer()).c_str());
+			}
+			else if (menu.ObtenerNivel() == 4) {
+				al_draw_text(mainkra, al_map_rgb(0, 0, 0), 700, 30, NULL, dinamico.Recorrer().c_str());
+			}
+
+			//Inicializa la variable evento y le pasa el evento generado
+			al_wait_for_event(event_queue, &evento);
+			//este if sirve para que cuando se presione una tecla se salga de la tabla de puntuaciones
+			if (evento.type == ALLEGRO_EVENT_KEY_DOWN)
+			{
+				tabla_puntuaciones = false;
+				menu_inicio = true;
+			}*/
+
+		}
+
+		//esto refresca la pantalla
 		al_flip_display();
 	}
 	return 0;

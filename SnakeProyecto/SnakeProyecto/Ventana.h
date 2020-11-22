@@ -12,6 +12,9 @@ private:
 	int aleatorioY=0;
 	int frutas = 0;
 	int tipo_fruta = 1;
+	//valores maximos
+	int punteomax = 0;
+	int frutasmax = 0;
 public:
 	//constructor
 	Ventana(int, int);
@@ -41,8 +44,9 @@ public:
 	double ObtenerVelocidad();
 	double ObtenerYmodificarVelocidadN4();
 	int ObtenerNivel();
-
-
-
+	//Modificadores y accesores de los maximos
+	void ModificarMaximos(int, int);
+	int ObtenerPuntosMax();
+	int ObtenerFrutosMax();
 };
 

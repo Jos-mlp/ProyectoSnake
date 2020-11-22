@@ -7,8 +7,10 @@
 
 Ventana::Ventana(int ancho, int alto)
 {
+	ALLEGRO_BITMAP* icono = al_load_bitmap("Recursos/icono2.jpg");
 	ALLEGRO_DISPLAY* ventana = al_create_display(ancho, alto);
 	al_set_window_title(ventana, "Snake Play");
+	al_set_display_icon(ventana, icono);
 }
 
 void Ventana::InsertarFondo(int x, int y)
@@ -60,13 +62,13 @@ void Ventana::ModificarNivel(int n)
 {
 	this->nivel = n;
 	if (n == 1) {
-		this->velocidad = 0.5;
-	}
-	else if (n == 2) {
 		this->velocidad = 0.25;
 	}
-	else if (n == 3) {
+	else if (n == 2) {
 		this->velocidad = 0.125;
+	}
+	else if (n == 3) {
+		this->velocidad = 0.08;
 	}
 	else if (n == 4) {
 		this->velocidad = 0.5;
@@ -222,4 +224,20 @@ double Ventana::ObtenerYmodificarVelocidadN4()
 int Ventana::ObtenerNivel()
 {
 	return this->nivel;
+}
+
+void Ventana::ModificarMaximos(int pts, int fr)
+{
+	this->punteomax = pts;
+	this->frutasmax = fr;
+}
+
+int Ventana::ObtenerPuntosMax()
+{
+	return this->punteomax;
+}
+
+int Ventana::ObtenerFrutosMax()
+{
+	return this->frutasmax;
 }
