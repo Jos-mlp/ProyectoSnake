@@ -340,3 +340,7 @@ ASALocalRun/
 healthchecksdb
 
 #Debug
+x64
+
+#Packages
+packages
